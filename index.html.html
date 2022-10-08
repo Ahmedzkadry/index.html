@@ -1,0 +1,67 @@
+<!DOCTYPE html> 
+<html dir="rtl"> <head> <meta charset="UTF-8"> <meta http-equiv="Content-Type" content="text/html"> <title>لعبة تخمين الرقم</title> 
+    <style> body { width: 50%; max-width: 800px; min-width: 480px; margin: 0 auto; background-color:grey; } .lastResult { color: white; padding: 3px; } .contenor{ background-color: wheat; border-radius: 30px; border: 3px black solid; padding: 30px; margin: 10px; width: 500px; } h1{ margin: 0; padding: 0; } p{ font-size: 20px; padding: 5px; } label{ font-size: 20px; } input{ padding: 5px; font-size: 20px; } </style>
+ </head> 
+ <body style="background-color: black;"> 
+    <div class="contenor">
+         <center><h1 >لعبة تخمين الرقم</h1></center>  
+         <p>لقد اخترنا رقم عشوائي بين 1-100, حاول تخمين الرقم بعشرة محاولات او اقل . سنخبرك ان كان تخمينك اصغر او اكبر من الرقم 
+            <div class="form">
+                 <label for="guessField">ادخل تخمين: </label>
+                 <input type="text" id="guessField" class="guessField">
+                  <input type="submit" value="ارسل التخمين" class="guessSubmit"> 
+                </div> 
+                  <div class="resultParas"> <p class="guesses">التخمين الماضي : </p>
+                     <p class="lastResult">خطأ</p> <p class="lowOrHi">اخر تخمين كان اكبر من الرقم</p>
+                     </div> 
+                    </div> 
+                    <script> 
+                     var randomNumber = Math.floor(Math.random() * 100) + 1;
+                      var guesses = document.querySelector('.guesses');
+                      var lastResult = document.querySelector('.lastResult'); 
+                      var lowOrHi = document.querySelector('.lowOrHi'); 
+                      var guessSubmit = document.querySelector('.guessSubmit');
+                       var guessField = document.querySelector('.guessField');
+                        var guessCount = 1; var resetButton; guessField.focus();
+                         function checkGuess() {
+                             var userGuess = Number(guessField.value);
+                              if(guessCount === 1) { guesses.textContent = 'التخمين الماضي: '; }
+                               guesses.textContent += userGuess + ' '; 
+                               if(userGuess === randomNumber)
+                                { lastResult.textContent = 'مبروك! لقد خمنت الرقم الصحيح';
+                                 lastResult.style.backgroundColor = 'green'; 
+                                 lowOrHi.textContent = ''; setGameOver(); } 
+                                 else if(guessCount === 10)
+                                  { lastResult.textContent = '!!!انتهت اللعبة!!!';
+                                   lowOrHi.textContent = ''; setGameOver(); }
+                                    else { lastResult.textContent = 'خطأ!';
+                                     lastResult.style.backgroundColor = 'red'; 
+                                     if(userGuess < randomNumber) 
+                                     { lowOrHi.textContent = 'اخر تخمين كان اصغر من الرقم'; } 
+                                     else if(userGuess > randomNumber) 
+                                     { lowOrHi.textContent = 'اخر تخمين كان اكبر من الرقم'; } } 
+                                     guessCount++; guessField.value = ''; guessField.focus(); }
+                                      guessSubmit.addEventListener('click', checkGuess); 
+                                      function setGameOver() {
+                                         guessField.disabled = true; 
+                                         guessSubmit.disabled = true; 
+                                         resetButton = document.createElement("button");
+                                          resetButton.textContent = 'ابدا لعبة جديدة'; 
+                                          document.body.appendChild(resetButton);
+                                           resetButton.addEventListener('click', resetGame); }
+                                            function resetGame() {
+                                                 guessCount = 1;
+                                                  var resetParas = document.querySelectorAll('.resultParas p'); 
+                                                  for(var i = 0 ; i < resetParas.length ; i++) 
+                                                  { resetParas[i].textContent = ''; }
+                                                   resetButton.parentNode.removeChild(resetButton);
+                                                    guessField.disabled = false;
+                                                     guessSubmit.disabled = false;
+                                                     
+                                                     guessField.value = '';
+                                                      guessField.focus();
+                                                       lastResult.style.backgroundColor = 'white'; 
+                                                          randomNumber = Math.floor(Math.random() * 100) + 1; }
+                     </script>
+                      </body>
+                       </html>
